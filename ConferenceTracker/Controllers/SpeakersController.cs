@@ -4,22 +4,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace ConferenceTracker.Controllers
 {
     public class SpeakersController : Controller
     {
         private readonly ISpeakerRepository _speakerRepository;
 
+
         public SpeakersController(ISpeakerRepository speakerRepository)
         {
             _speakerRepository = speakerRepository;
         }
+
 
         public IActionResult Index()
         {
             var speakers = _speakerRepository.GetAllSpeakers();
             return View(speakers);
         }
+
 
         public IActionResult Details(int? id)
         {
@@ -28,14 +33,17 @@ namespace ConferenceTracker.Controllers
                 return NotFound();
             }
 
+
             var speaker = _speakerRepository.GetSpeaker((int)id);
             if (speaker == null)
             {
                 return NotFound();
             }
 
+
             return View(speaker);
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Administrators")]
@@ -44,6 +52,7 @@ namespace ConferenceTracker.Controllers
             return View();
         }
 
+
         [HttpPost]
         [Authorize(Roles = "Administrators")]
         public IActionResult Create(Speaker speaker)
@@ -51,6 +60,7 @@ namespace ConferenceTracker.Controllers
             _speakerRepository.Create(speaker);
             return RedirectToAction(nameof(Index));
         }
+
 
         [HttpGet]
         [Authorize(Roles = "Administrators")]
@@ -61,6 +71,7 @@ namespace ConferenceTracker.Controllers
                 return NotFound();
             }
 
+
             var speaker = _speakerRepository.GetSpeaker((int)id);
             if (speaker == null)
             {
@@ -68,6 +79,7 @@ namespace ConferenceTracker.Controllers
             }
             return View(speaker);
         }
+
 
         [HttpPost]
         [Authorize(Roles = "Administrators")]
@@ -77,6 +89,7 @@ namespace ConferenceTracker.Controllers
             {
                 return NotFound();
             }
+
 
             try
             {
@@ -96,6 +109,7 @@ namespace ConferenceTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         [HttpGet]
         [Authorize(Roles = "Administrators")]
         public IActionResult Delete(int? id)
@@ -105,14 +119,17 @@ namespace ConferenceTracker.Controllers
                 return NotFound();
             }
 
+
             var speaker = _speakerRepository.GetSpeaker((int)id);
             if (speaker == null)
             {
                 return NotFound();
             }
 
+
             return View(speaker);
         }
+
 
         [HttpPost, ActionName("Delete")]
         [Authorize(Roles = "Administrators")]
@@ -122,6 +139,7 @@ namespace ConferenceTracker.Controllers
             _speakerRepository.Delete(speaker);
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool SpeakerExists(int id)
         {
